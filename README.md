@@ -10,6 +10,7 @@ make a decision at the lunch place.
 - Creating employee
 - Getting current day menu
 - Getting results for the current day
+- Daily resets voting
 
 ## Installing using GitHub:
 Install PostgresSQL and create db
