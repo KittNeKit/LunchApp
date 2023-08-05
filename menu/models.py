@@ -1,9 +1,12 @@
 from django.db import models
 
+from LunchApp.settings import AUTH_USER_MODEL
+
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)
     votes = models.IntegerField(default=0)
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.name
