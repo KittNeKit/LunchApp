@@ -58,7 +58,8 @@ class MenuViewSet(
                 return super().create(request, *args, **kwargs)
             else:
                 return Response(
-                    {"error": "You can only create menus for your own restaurants."},
+                    {"error": "You can only "
+                              "create menus for your own restaurants."},
                     status=status.HTTP_403_FORBIDDEN,
                 )
         except Restaurant.DoesNotExist:

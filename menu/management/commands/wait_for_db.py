@@ -20,8 +20,7 @@ class Command(BaseCommand):
                 if retry_count >= 5:
                     self.stdout.write("Unable to connect to the database.")
                     return
-                self.stdout.write("Database unavailable,"
-                                  " waiting 5 seconds...")
+                self.stdout.write("Database unavailable," " waiting 5 seconds...")
                 time.sleep(5)
                 retry_count += 1
 
