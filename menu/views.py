@@ -31,8 +31,7 @@ class MenuViewSet(
         if self.request.user.type_of_user == "Employee":
             current_day = datetime.datetime.now().strftime("%A")
             return self.queryset.filter(day_of_the_week=current_day)
-        queryset = self.queryset.filter(restaurant__owner=self.request.user.id)
-        return queryset
+        return self.queryset.filter(restaurant__owner=self.request.user.id)
 
     def get_serializer_class(self):
         if self.request.user.type_of_user == "Employee":
@@ -57,6 +56,7 @@ class MenuViewSet(
 
     @action(detail=True, methods=["post"])
     def vote_for_menu(self, request, pk=None):
+        """Function to vote for menu, User can vote only once"""
         if not request.user.votes:
             restaurant = Restaurant.objects.get(
                 pk=Menu.objects.get(pk=pk).restaurant.pk
@@ -73,6 +73,7 @@ class MenuViewSet(
 
 @api_view(["Get"])
 def get_most_voted_menu(request):
+    """ View for most voted restaurant """
     restaurant = Restaurant.objects.all().order_by("-votes").first()
     serializer = RestaurantSerializer(restaurant, many=False)
     return Response(serializer.data, status=200)
