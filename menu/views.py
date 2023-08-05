@@ -73,7 +73,7 @@ class MenuViewSet(
 
 @api_view(["Get"])
 def get_most_voted_menu(request):
-    """ View for most voted restaurant """
+    """View for most voted restaurant"""
     restaurant = Restaurant.objects.all().order_by("-votes").first()
     serializer = RestaurantSerializer(restaurant, many=False)
     return Response(serializer.data, status=200)
