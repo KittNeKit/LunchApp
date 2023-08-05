@@ -1,5 +1,6 @@
 import datetime
 
+from drf_spectacular.utils import extend_schema_view, extend_schema
 from rest_framework import mixins, status
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import IsAuthenticated
@@ -16,6 +17,17 @@ from menu.serializers import (
 )
 
 
+@extend_schema_view(
+    list=extend_schema(
+        description=(
+            "All menu in the LunchApp endpoint "
+            "(User can see all menu of the current day of the week, "
+            "Restaurants users can see all of owns menu)."
+        )
+    ),
+    retrieve=extend_schema(description="Specific menu endpoint."),
+    create=extend_schema(description="Creating a new menu endpoint."),
+)
 class MenuViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -55,7 +67,7 @@ class MenuViewSet(
             )
 
     @action(detail=True, methods=["post"])
-    def vote_for_menu(self, request, pk=None):
+    def vote(self, request, pk=None):
         """Function to vote for menu, User can vote only once"""
         if not request.user.votes:
             restaurant = Restaurant.objects.get(
@@ -79,6 +91,17 @@ def get_most_voted_menu(request):
     return Response(serializer.data, status=200)
 
 
+@extend_schema_view(
+    list=extend_schema(
+        description=(
+            "All restaurants in the LunchApp endpoint "
+            "(User can see all restaurants, "
+            "Restaurants users can see all of owns restaurants)."
+        )
+    ),
+    retrieve=extend_schema(description="Specific restaurants endpoint."),
+    create=extend_schema(description="Creating a new restaurants endpoint."),
+)
 class RestaurantViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -89,6 +112,11 @@ class RestaurantViewSet(
     serializer_class = RestaurantSerializer
     authentication_classes = (JWTAuthentication,)
     permission_classes = (IsAuthenticated, IsRestaurantOrIfUserReadOnly)
+
+    def get_queryset(self):
+        if self.request.user.type_of_user == "Restaurant":
+            return self.queryset.filter(owner_id=self.request.user.id)
+        return self.queryset
 
     def perform_create(self, serializer):
         serializer.save(owner_id=self.request.user.id)
