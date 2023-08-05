@@ -13,7 +13,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
 class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
-        fields = ("menu", "restaurant")
+        fields = ("id", "menu", "restaurant")
         read_only_fields = ("menu", "restaurant")
 
 
