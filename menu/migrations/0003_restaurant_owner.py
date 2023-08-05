@@ -6,17 +6,20 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('menu', '0002_restaurant_votes'),
+        ("menu", "0002_restaurant_votes"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='restaurant',
-            name='owner',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="restaurant",
+            name="owner",
+            field=models.ForeignKey(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
             preserve_default=False,
         ),
     ]

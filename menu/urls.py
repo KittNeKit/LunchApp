@@ -4,7 +4,7 @@ from rest_framework import routers
 from menu.views import MenuViewSet, RestaurantViewSet, get_most_voted_menu
 
 router = routers.DefaultRouter()
-router.register("vote", MenuViewSet)
+router.register("all-menu", MenuViewSet)
 router.register("restaurant", RestaurantViewSet)
 
 urlpatterns = [
