@@ -71,6 +71,21 @@ python manage.py runserver
 
 7. Access the website locally at http://localhost:8000.
 
+8. Run Redis for Celery, don`t forget to download Docker
+
+```bash
+docker run -d -p 6379:6379 redis
+```
+9. Run celery to resets voting
+
+```bash
+celery -A LunchApp worker -l info
+```
+```bash
+celery -A LunchApp beat -l INFO --scheduler django_celery_beat.schedulers.DatabaseScheduler"
+```
+
+
 ## Run with Docker
 
 Docker should be installed
